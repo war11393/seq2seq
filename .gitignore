@@ -1,0 +1,15 @@
+# 取消部分自测文件的上传
+
+wasabi.ipynb
+
+# 取消数据集、中间文件、输出文件的上传
+
+dataset/
+output/
+training_checkpoints/
+vocabs/
+
+# 取消PyCharm项目相关文件的上传
+
+__pycache__/
+.idea/
