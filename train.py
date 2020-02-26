@@ -36,10 +36,14 @@ def train_model(model, params, ckpt):
     def loss_function(real, pred):
         pad_mask = tf.math.equal(real, pad_index)
         nuk_mask = tf.math.equal(real, unk_index)
+        # 计算真实logit位置掩码
         mask = tf.math.logical_not(tf.math.logical_or(pad_mask, nuk_mask))
+        # 计算loss向量
         loss_ = loss_object(real, pred)
+        # mask适配loss的数据类型，两数相乘完成掩码操作
         mask = tf.cast(mask, dtype=loss_.dtype)
         loss_ *= mask
+        # 返回平均loss值
         return tf.reduce_mean(loss_)
 
     @tf.function
@@ -100,4 +104,8 @@ def train(params):
 
 
 if __name__ == '__main__':
-    train(config.get_params())
+    params = config.get_params()
+    params['batch_size'] = 128
+    params['train_epochs'] = 5
+    params['learning_rate'] = 0.01
+    train(params)

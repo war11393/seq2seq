@@ -4,24 +4,6 @@ from gensim.models import fasttext, word2vec
 
 import config
 
-# 交叉熵计算
-loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True, reduction='none')
-
-
-def loss_function(real, pred, pad_index):
-    # 计算loss向量
-    loss = loss_object(real, pred)
-    # 计算真实logit位置掩码
-    mask = tf.math.logical_not(tf.math.equal(real, pad_index))
-    # 计算掩码后实际长度
-    dec_len = tf.reduce_sum(tf.cast(mask, dtype=tf.float32), axis=-1)
-    # mask适配loss的数据类型，两数相乘完成掩码操作
-    mask = tf.cast(mask, dtype=loss.dtype)
-    loss *= mask
-    # 返回平均loss值
-    loss = tf.reduce_sum(loss, axis=-1) / dec_len
-    return tf.reduce_mean(loss)
-
 
 def load_data():
     """

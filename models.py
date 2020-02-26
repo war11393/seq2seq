@@ -31,3 +31,8 @@ class Seq2Seq(tf.keras.Model):
             predictions.append(predict)
 
         return tf.stack(predictions, 1), dec_hidden
+
+    def call_one_step_decoder(self, dec_input, dec_hidden, enc_output):
+        context_vector, attention_weights = self.attention(dec_hidden, enc_output)
+        prediction, dec_hidden = self.decoder(dec_input, None, None, context_vector)
+        return prediction, dec_hidden, context_vector, attention_weights

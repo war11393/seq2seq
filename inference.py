@@ -97,4 +97,6 @@ def inference(params):
 
 
 if __name__ == '__main__':
-    inference(config.get_params())
+    params = config.get_params()
+    params['batch_size'] = 256
+    inference(params)
